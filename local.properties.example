@@ -1,0 +1,2 @@
+# Copy to local.properties. Android Studio fills in sdk.dir on first sync.
+# sdk.dir=/Users/you/Library/Android/sdk
