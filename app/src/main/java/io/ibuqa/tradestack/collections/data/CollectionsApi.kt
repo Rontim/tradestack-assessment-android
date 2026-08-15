@@ -41,10 +41,6 @@ interface CollectionsApi {
     /**
      * The server answers 207 with a per-receipt outcome. It may also answer
      * 503, and it may take longer than you expect.
-     *
-     * TODO(candidate): a Response wrapper is used here rather than the bare
-     *  body so you can see the status code. Whether that is the right shape
-     *  for your call site is up to you.
      */
     @POST("api/v1/collections/batch/")
     suspend fun pushBatch(@Body body: BatchDto): Response<BatchResultDto>
