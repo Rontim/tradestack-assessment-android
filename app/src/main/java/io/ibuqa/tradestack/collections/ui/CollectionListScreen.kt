@@ -47,16 +47,6 @@ class ListViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
 
     init {
-        // Smoke Test
-//        viewModelScope.launch {
-//            dao.insert(CollectionEntity(
-//                clientUuid = UUID.randomUUID().toString(),
-//                outletCode = "OUT-1000", outletName = "Neema Shop",
-//                invoiceNo = "INV-2", method = "cash",
-//                amountKes = 1.0, receiptRef = "R-1",
-//                recordedAtEpochMs = System.currentTimeMillis(),
-//            ))
-//        }
         scheduler.enqueue()
     }
 
