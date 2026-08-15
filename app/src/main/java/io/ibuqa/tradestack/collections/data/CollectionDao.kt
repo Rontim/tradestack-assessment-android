@@ -33,4 +33,11 @@ interface CollectionDao {
 
     @Query("UPDATE collections SET state = 'REJECTED', rejectReason = :reason WHERE clientUuid = :uuid")
     suspend fun markRejected(uuid: String, reason: String?)
+
+    @Query("""
+        UPDATE collections
+        SET state = 'SYNCING'
+        WHERE clientUuid IN (:uuids)
+    """)
+    suspend fun markSyncing(uuids: List<String>)
 }

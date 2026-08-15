@@ -19,6 +19,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.UUID
+import javax.inject.Named
+import androidx.core.content.edit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -56,5 +59,14 @@ object AppModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(CollectionsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("deviceId")
+    fun deviceId(@ApplicationContext ctx: Context): String {
+        val prefs = ctx.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        return prefs.getString("device_id", null) ?: UUID.randomUUID().toString()
+            .also { prefs.edit { putString("device_id", it) } }
     }
 }

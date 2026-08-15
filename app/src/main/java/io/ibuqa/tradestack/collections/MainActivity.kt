@@ -16,6 +16,7 @@ import io.ibuqa.tradestack.collections.ui.RecordCollectionScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MaterialTheme {
                 Surface {
