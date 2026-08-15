@@ -13,7 +13,7 @@ interface CollectionDao {
     @Query("SELECT * FROM collections ORDER BY recordedAtEpochMs DESC")
     fun observeAll(): Flow<List<CollectionEntity>>
 
-    @Query("SELECT * FROM collections WHERE synced = 0 ORDER BY recordedAtEpochMs")
+    @Query("SELECT * FROM collections WHERE state != 'SYNCED' ORDER BY recordedAtEpochMs")
     suspend fun pending(): List<CollectionEntity>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -22,6 +22,15 @@ interface CollectionDao {
     @Update
     suspend fun update(row: CollectionEntity)
 
-    @Query("SELECT COUNT(*) FROM collections WHERE synced = 0")
+    @Query("SELECT COUNT(*) FROM collections WHERE state != 'SYNCED'")
     fun pendingCount(): Flow<Int>
+
+    @Query("UPDATE collections SET state = :state WHERE clientUuid = :clientUuid")
+    suspend fun setState(clientUuid: String, state: SyncState)
+
+    @Query("UPDATE collections SET state = 'NOT_SYNCED' WHERE state = 'SYNCING'")
+    suspend fun resetStale()
+
+    @Query("UPDATE collections SET state = 'REJECTED', rejectReason = :reason WHERE clientUuid = :uuid")
+    suspend fun markRejected(uuid: String, reason: String?)
 }

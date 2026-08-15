@@ -3,16 +3,18 @@ package io.ibuqa.tradestack.collections.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+enum class SyncState {
+    NOT_SYNCED,
+    SYNCING,
+    SYNCED,
+    REJECTED
+}
+
 /**
  * A collection as the handset knows it.
  *
  * `clientUuid` is generated on the device and is the identity the server keys
  * on. It must be stable across retries - that is the whole point of it.
- *
- * TODO(candidate): this entity carries one field for state and it is a
- *  Boolean. Decide whether a Boolean is enough to describe what can happen to
- *  a receipt between the rep's thumb and our database, and change it if it is
- *  not. Whatever you decide, say why in DECISIONS.md.
  */
 @Entity(tableName = "collections")
 data class CollectionEntity(
@@ -24,5 +26,6 @@ data class CollectionEntity(
     val amountKes: Double,
     val receiptRef: String,
     val recordedAtEpochMs: Long,
-    val synced: Boolean = false,
+    val state: SyncState = SyncState.NOT_SYNCED,
+    val rejectReason: String? = null,
 )

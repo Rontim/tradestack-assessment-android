@@ -27,7 +27,9 @@ object AppModule {
     @Provides
     @Singleton
     fun database(@ApplicationContext ctx: Context): AppDatabase =
-        Room.databaseBuilder(ctx, AppDatabase::class.java, "collections.db").build()
+        Room.databaseBuilder(ctx, AppDatabase::class.java, "collections.db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun dao(db: AppDatabase): CollectionDao = db.collections()
